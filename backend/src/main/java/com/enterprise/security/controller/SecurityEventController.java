@@ -6,12 +6,12 @@ import com.enterprise.security.service.SecurityEventService;
 
 import jakarta.validation.Valid;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/events")
@@ -40,10 +40,15 @@ public class SecurityEventController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'SECURITY_ANALYST')")
-    public ResponseEntity<List<SecurityEvent>> getAllEvents() {
+    public ResponseEntity<Page<SecurityEvent>> getAllEvents(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
 
-        return ResponseEntity.ok(
-                securityEventService.getAllEvents()
-        );
+        Page<SecurityEvent> events =
+                securityEventService.getAllEvents(
+                        PageRequest.of(page, size)
+                );
+
+        return ResponseEntity.ok(events);
     }
 }

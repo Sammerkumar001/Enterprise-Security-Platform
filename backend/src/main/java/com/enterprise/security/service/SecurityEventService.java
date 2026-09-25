@@ -4,10 +4,11 @@ import com.enterprise.security.dto.SecurityEventRequest;
 import com.enterprise.security.entity.SecurityEvent;
 import com.enterprise.security.repository.SecurityEventRepository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 public class SecurityEventService {
@@ -36,7 +37,7 @@ public class SecurityEventService {
         return securityEventRepository.save(event);
     }
 
-    public List<SecurityEvent> getAllEvents() {
-        return securityEventRepository.findAll();
+    public Page<SecurityEvent> getAllEvents(Pageable pageable) {
+        return securityEventRepository.findAll(pageable);
     }
 }
