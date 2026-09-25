@@ -40,12 +40,24 @@ public class SecurityEventController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'SECURITY_ANALYST')")
-    public ResponseEntity<Page<SecurityEvent>> getAllEvents(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<Page<SecurityEvent>> getEvents(
+
+            @RequestParam(required = false)
+            String severity,
+
+            @RequestParam(required = false)
+            String eventType,
+
+            @RequestParam(defaultValue = "0")
+            int page,
+
+            @RequestParam(defaultValue = "10")
+            int size) {
 
         Page<SecurityEvent> events =
-                securityEventService.getAllEvents(
+                securityEventService.getEvents(
+                        severity,
+                        eventType,
                         PageRequest.of(page, size)
                 );
 

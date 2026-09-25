@@ -37,7 +37,39 @@ public class SecurityEventService {
         return securityEventRepository.save(event);
     }
 
-    public Page<SecurityEvent> getAllEvents(Pageable pageable) {
+    public Page<SecurityEvent> getEvents(
+            String severity,
+            String eventType,
+            Pageable pageable) {
+
+        if (severity != null && eventType != null) {
+
+            return securityEventRepository
+                    .findBySeverityAndEventType(
+                            severity,
+                            eventType,
+                            pageable
+                    );
+        }
+
+        if (severity != null) {
+
+            return securityEventRepository
+                    .findBySeverity(
+                            severity,
+                            pageable
+                    );
+        }
+
+        if (eventType != null) {
+
+            return securityEventRepository
+                    .findByEventType(
+                            eventType,
+                            pageable
+                    );
+        }
+
         return securityEventRepository.findAll(pageable);
     }
 }
